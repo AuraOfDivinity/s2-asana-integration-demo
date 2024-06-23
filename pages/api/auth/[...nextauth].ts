@@ -13,13 +13,16 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile, email, credentials }) {
       // Custom sign-in logic
       console.log({ user, profile, account, email, credentials });
-      const res = await fetch(`${process.env.HOST}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: user.email, fullName: user.name }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: user.email, fullName: user.name }),
+        }
+      );
       if (res.ok) {
         return true;
       } else {
@@ -45,13 +48,16 @@ export const authOptions: NextAuthOptions = {
 };
 
 async function exchangeAccessTokenForJwt(accessToken: string) {
-  const response = await fetch(`${process.env.HOST}/auth/exchange`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ accessToken }),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_HOST}/auth/exchange`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ accessToken }),
+    }
+  );
   const data = await response.json();
   return data.jwtToken;
 }
