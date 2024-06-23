@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile, email, credentials }) {
       // Custom sign-in logic
       console.log({ user, profile, account, email, credentials });
-      const res = await fetch("http://localhost:4000/auth/register", {
+      const res = await fetch(`${process.env.HOST}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,6 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }: { session: any; token: JWT }) {
       session.accessToken = token.accessToken;
-
       session.jwtToken = await exchangeAccessTokenForJwt(token.accessToken!);
       return session;
     },
@@ -46,7 +45,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 async function exchangeAccessTokenForJwt(accessToken: string) {
-  const response = await fetch("http://localhost:4000/auth/exchange", {
+  const response = await fetch(`${process.env.HOST}/auth/exchange`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
